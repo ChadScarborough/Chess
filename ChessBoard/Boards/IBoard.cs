@@ -9,5 +9,7 @@ namespace ChessBoard.Boards
         void AddPiece(IPiece piece, Coordinate coordinate);
         void RemovePiece(Coordinate coordinate);
         void RemovePiece(int rank, int file);
+        void MovePiece(IPiece piece, Square square);
+        void MovePiece(IPiece piece, Coordinate coordinate);
     }
 }

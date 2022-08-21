@@ -71,5 +71,16 @@ namespace ChessBoard.Boards
                 }
             }
         }
+
+        public void MovePiece(IPiece piece, Square square)
+        {
+            square.SetPiece(piece);
+        }
+
+        public void MovePiece(IPiece piece, Coordinate coordinate)
+        {
+            Square targetSquare = GetSquareByCoordinate(coordinate);
+            MovePiece(piece, targetSquare);
+        }
     }
 }

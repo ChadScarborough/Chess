@@ -37,6 +37,7 @@ namespace ChessBoard.Boards
 
         public void SetPiece(IPiece piece)
         {
+            piece.Location.ClearPiece();
             if(_piece != null)
             {
                 _piece.Destroy();
