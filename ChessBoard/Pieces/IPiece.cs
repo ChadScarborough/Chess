@@ -8,6 +8,7 @@ namespace ChessBoard.Pieces
         public Color PieceColor { get; }
         public PieceType Type { get; }
         public Square Location { get; set; }
+        public int Value { get; }
 
         public void Move(int rank, int file);
         public void Destroy();

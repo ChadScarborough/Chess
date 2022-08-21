@@ -5,101 +5,93 @@ namespace ChessBoard.Pieces.MoveBehaviours
 {
     public class WhitePawnMoveBehaviour : IMoveBehaviour
     {
-        private IPiece piece;
-        private IBoard board;
+        private IBoard _board;
+        private Pawn _pawn;
 
-        public WhitePawnMoveBehaviour(IPiece piece, IBoard board)
+        public WhitePawnMoveBehaviour(IBoard board, Pawn pawn)
         {
-            this.piece = piece;
-            this.board = board;
+            _board = board;
+            _pawn = pawn;
         }
 
-        public void Move(Coordinate startingLocation, Coordinate endingLocation)
+        public bool CanMove(Coordinate targetLocation)
         {
-            if (startingLocation.Equals(endingLocation)) return;
-            Square endingSquare = board.GetSquareByCoordinate(endingLocation);
-            if (endingSquare.IsOccupied())
+            Coordinate currentLocation = _pawn.Location.GetCoordinate();
+            if (currentLocation.Equals(targetLocation)) 
+                throw new Exception("Piece cannot move to the square it already occupies");
+            Square targetSquare = _board.GetSquareByCoordinate(targetLocation);
+            if (targetSquare.IsOccupied())
             {
-                TryCapture(startingLocation, endingLocation);
-                return;
+                return TryCapture(currentLocation, targetLocation);
             }
-            if (startingLocation.rank == 1)
+            if (currentLocation.rank == 1)
             {
-                SecondRankMove(startingLocation, endingLocation);
-                return;
+                return SecondRankMove(currentLocation, targetLocation);
             }
-            StandardMove(startingLocation, endingLocation);
+            return StandardMove(currentLocation, targetLocation);
         }
 
-        private void TryCapture(Coordinate startingLocation, Coordinate endingLocation)
+        private bool TryCapture(Coordinate currentLocation, Coordinate targetLocation)
         {
-            GuardTryCapture(endingLocation);
-            Capture(startingLocation, endingLocation);
+            GuardTryCapture(targetLocation);
+            return Capture(currentLocation, targetLocation);
         }
 
-        private void GuardTryCapture(Coordinate endingLocation)
+        private void GuardTryCapture(Coordinate targetLocation)
         {
-            Square endingSquare = board.GetSquareByCoordinate(endingLocation);
-            if (endingSquare.OccupyingPieceColor() == WHITE)
+            Square targetSquare = _board.GetSquareByCoordinate(targetLocation);
+            if (targetSquare.OccupyingPieceColor() == WHITE)
                 throw new Exception("Target square is occupied by a piece of the same color");
         }
 
-        private void Capture(Coordinate startingLocation, Coordinate endingLocation)
+        private bool Capture(Coordinate currentLocation, Coordinate targetLocation)
         {
-            GuardCapture(startingLocation, endingLocation);
-            MovePiece(startingLocation, endingLocation);
+            GuardCapture(currentLocation, targetLocation);
+            return true;
         }
 
-        private void MovePiece(Coordinate startingLocation, Coordinate endingLocation)
+        private void GuardCapture(Coordinate currentLocation, Coordinate targetLocation)
         {
-            Square endingSquare = board.GetSquareByCoordinate(endingLocation);
-            Square startingSquare = board.GetSquareByCoordinate(startingLocation);
-            endingSquare.SetPiece(piece);
-            startingSquare.ClearPiece();
-        }
-
-        private void GuardCapture(Coordinate startingLocation, Coordinate endingLocation)
-        {
-            if (endingLocation.rank != startingLocation.rank + 1)
+            if (targetLocation.rank != currentLocation.rank + 1)
                 throw new Exception("Cannot capture more than one rank ahead");
-            if ((endingLocation.file != startingLocation.file + 1) &&
-                (endingLocation.file != startingLocation.file - 1))
+            if ((targetLocation.file != currentLocation.file + 1) &&
+                (targetLocation.file != currentLocation.file - 1))
                 throw new Exception("Pawns may only capture diagonally");
         }
 
-        private void SecondRankMove(Coordinate startingLocation, Coordinate endingLocation)
+        private bool SecondRankMove(Coordinate currentLocation, Coordinate targetLocation)
         {
-            GuardSecondRankMove(startingLocation, endingLocation);
-            MovePiece(startingLocation, endingLocation);
+            GuardSecondRankMove(currentLocation, targetLocation);
+            return true;
         }
 
-        private void GuardSecondRankMove(Coordinate startingLocation, Coordinate endingLocation)
+        private void GuardSecondRankMove(Coordinate currentLocation, Coordinate targetLocation)
         {
-            if (startingLocation.file != endingLocation.file)
+            if (currentLocation.file != targetLocation.file)
                 throw new Exception("Pawn must move directly forward, unless capturing");
-            if (endingLocation.rank != 2 && endingLocation.rank != 3)
+            if (targetLocation.rank != 2 && targetLocation.rank != 3)
                 throw new Exception("Pawn may move at most two squares forward");
-            if (endingLocation.rank == 3 && InBetweenSquareIsOccupied(board, startingLocation))
+            if (targetLocation.rank == 3 && InBetweenSquareIsOccupied(currentLocation))
                 throw new Exception("Pawn cannot move through another piece");
         }
 
-        private bool InBetweenSquareIsOccupied(IBoard board, Coordinate startingLocation)
+        private bool InBetweenSquareIsOccupied(Coordinate currentLocation)
         {
-            Square inBetweenSquare = board.GetSquareByCoordinate(new Coordinate(5, startingLocation.file));
+            Square inBetweenSquare = _board.GetSquareByCoordinate(new Coordinate(5, currentLocation.file));
             return inBetweenSquare.IsOccupied();
         }
 
-        private void StandardMove(Coordinate startingLocation, Coordinate endingLocation)
+        private bool StandardMove(Coordinate currentLocation, Coordinate targetLocation)
         {
-            GuardStandardMove(startingLocation, endingLocation);
-            MovePiece(startingLocation, endingLocation);
+            GuardStandardMove(currentLocation, targetLocation);
+            return true;
         }
 
-        private void GuardStandardMove(Coordinate startingLocation, Coordinate endingLocation)
+        private void GuardStandardMove(Coordinate currentLocation, Coordinate targetLocation)
         {
-            if (startingLocation.file != endingLocation.file)
+            if (currentLocation.file != targetLocation.file)
                 throw new Exception("Pawn must move directly forward, unless capturing");
-            if (endingLocation.rank != startingLocation.rank + 1)
+            if (targetLocation.rank != currentLocation.rank + 1)
                 throw new Exception("Pawn may only move one space forward");
         }
     }
