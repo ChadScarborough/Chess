@@ -17,6 +17,8 @@ namespace ChessBoard.Pieces
                     return new BlackPawn(board, coordinate);
                 case KNIGHT:
                     return new Knight(board, coordinate, color);
+                case BISHOP:
+                    return new Bishop(board, coordinate, color);
                 case ROOK:
                     return new Rook(board, coordinate, color);
                 default:
