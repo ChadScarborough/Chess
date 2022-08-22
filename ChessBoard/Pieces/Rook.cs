@@ -18,6 +18,7 @@ namespace ChessBoard.Pieces
         public Rook(IBoard board, Coordinate coordinate, Color color)
         {
             _board = board;
+            Location = board.GetSquareByCoordinate(coordinate);
             board.AddPiece(this, coordinate);
             PieceColor = color;
             _moveBehaviour = new RookMoveBehaviour(_board, this);

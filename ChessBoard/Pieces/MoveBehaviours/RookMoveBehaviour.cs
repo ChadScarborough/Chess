@@ -40,11 +40,11 @@ namespace ChessBoard.Pieces.MoveBehaviours
         private bool CanMoveRightAlongRank(Coordinate currentLocation, Coordinate targetLocation)
         {
             int rank = currentLocation.rank;
-            int currentFile = currentLocation.file;
+            int currentFile = currentLocation.file + 1;
             int targetFile = targetLocation.file;
             while (currentFile < targetFile)
             {
-                if(_board.GetSquareByCoordinate(new Coordinate(rank, currentFile)).IsOccupied())
+                if (_board.GetSquareByCoordinate(new Coordinate(rank, currentFile)).IsOccupied())
                 {
                     throw new Exception("Piece cannot move through another piece");
                 }
@@ -56,7 +56,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
         private bool CanMoveLeftAlongRank(Coordinate currentLocation, Coordinate targetLocation)
         {
             int rank = currentLocation.rank;
-            int currentFile = currentLocation.file;
+            int currentFile = currentLocation.file - 1;
             int targetFile = targetLocation.file;
             while (currentFile > targetFile)
             {
@@ -79,15 +79,15 @@ namespace ChessBoard.Pieces.MoveBehaviours
         private bool CanMoveUpAlongFile(Coordinate currentLocation, Coordinate targetLocation)
         {
             int file = currentLocation.file;
-            int currentRank = currentLocation.rank;
-            int targetRank = targetLocation.file;
+            int currentRank = currentLocation.rank + 1;
+            int targetRank = targetLocation.rank;
             while (currentRank < targetRank)
             {
-                if(_board.GetSquareByCoordinate(new Coordinate(currentRank, file)).IsOccupied())
+                if (_board.GetSquareByCoordinate(new Coordinate(currentRank, file)).IsOccupied())
                 {
                     throw new Exception("Piece cannot move through another piece");
                 }
-                file++;
+                currentRank++;
             }
             return true;
         }
@@ -95,15 +95,15 @@ namespace ChessBoard.Pieces.MoveBehaviours
         private bool CanMoveDownAlongFile(Coordinate currentLocation, Coordinate targetLocation)
         {
             int file = currentLocation.file;
-            int currentRank = currentLocation.rank;
-            int targetRank = targetLocation.file;
+            int currentRank = currentLocation.rank - 1;
+            int targetRank = targetLocation.rank;
             while (currentRank > targetRank)
             {
                 if (_board.GetSquareByCoordinate(new Coordinate(currentRank, file)).IsOccupied())
                 {
                     throw new Exception("Piece cannot move through another piece");
                 }
-                file--;
+                currentRank--;
             }
             return true;
         }
