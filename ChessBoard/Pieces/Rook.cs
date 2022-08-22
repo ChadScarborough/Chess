@@ -1,5 +1,5 @@
 ﻿using ChessBoard.Boards;
-using ChessBoard.Globals;
+using static ChessBoard.Globals.Functions;
 using static ChessBoard.Globals.Enums;
 using ChessBoard.Pieces.MoveBehaviours;
 
@@ -10,8 +10,8 @@ namespace ChessBoard.Pieces
         private IBoard _board;
         private IMoveBehaviour _moveBehaviour;
 
-        public Enums.Color PieceColor { get; }
-        public Enums.PieceType Type => ROOK;
+        public Color PieceColor { get; }
+        public PieceType Type => ROOK;
         public Square Location { get; set; }
         public int Value => 5;
 
@@ -30,7 +30,38 @@ namespace ChessBoard.Pieces
 
         public void Move(int rank, int file)
         {
-            
+            try
+            {
+                TryMove(rank, file);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+
+        private void TryMove(int rank, int file)
+        {
+            GuardAgainstOffBoardMoves(rank, file);
+            Coordinate targetCoordinate = new Coordinate(rank, file);
+            if (_moveBehaviour.CanMove(targetCoordinate))
+            {
+                _board.MovePiece(this, targetCoordinate);
+            }
+        }
+
+        public override string ToString()
+        {
+            switch (PieceColor)
+            {
+                case WHITE:
+                    return "R";
+                case BLACK:
+                    return "r";
+                default:
+                    throw new Exception("Meeeeoooooow");
+            }
         }
     }
 }
