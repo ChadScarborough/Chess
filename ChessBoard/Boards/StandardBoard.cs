@@ -25,6 +25,11 @@ namespace ChessBoard.Boards
             return _squares[coordinate.rank, coordinate.file];
         }
 
+        public Square GetSquareByCoordinate(int rank, int file)
+        {
+            return GetSquareByCoordinate(new Coordinate(rank, file));
+        }
+
         public void RemovePiece(Coordinate coordinate)
         {
             Square square = GetSquareByCoordinate(coordinate);
