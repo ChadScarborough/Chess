@@ -1,7 +1,14 @@
-﻿ChessBoard.Boards.StandardBoard board = new ChessBoard.Boards.StandardBoard();
-ChessBoard.Pieces.BlackPawn blackPawn = new ChessBoard.Pieces.BlackPawn(board, new ChessBoard.Boards.Coordinate(6, 3));
-ChessBoard.Pieces.WhitePawn whitePawn = new ChessBoard.Pieces.WhitePawn(board, new ChessBoard.Boards.Coordinate(1, 2));
-whitePawn.Move(3, 2);
-blackPawn.Move(4, 3);
-whitePawn.Move(4, 3);
+﻿using ChessBoard.Boards;
+using ChessBoard.Pieces;
+using static ChessBoard.Globals.Enums;
+using static ChessBoard.Pieces.PieceFactory;
+
+StandardBoard board = new StandardBoard();
+IPiece rook = CreatePiece(BLACK, ROOK, board, new Coordinate(4, 4));
+Console.WriteLine(board);
+rook.Move(4, 1);
+Console.WriteLine(board);
+rook.Move(0, 1);
+Console.WriteLine(board);
+rook.Move(5, 5);
 Console.WriteLine(board);
