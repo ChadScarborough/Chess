@@ -18,6 +18,9 @@ namespace ChessBoard.Pieces.MoveBehaviours
             Coordinate currentLocation = _piece.Location.GetCoordinate();
             if (currentLocation.Equals(targetLocation))
                 throw new Exception("Piece cannot move to the square it already occupies");
+            if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
+                _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
+                throw new Exception("Piece cannot capture a piece of the same color");
             int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
             int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
             if (rankDiff != fileDiff)

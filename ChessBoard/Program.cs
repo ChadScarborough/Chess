@@ -4,11 +4,9 @@ using static ChessBoard.Globals.Enums;
 using static ChessBoard.Pieces.PieceFactory;
 
 StandardBoard board = new StandardBoard();
-IPiece rook = CreatePiece(BLACK, ROOK, board, new Coordinate(4, 4));
+IPiece bishop = CreatePiece(WHITE, BISHOP, board, new Coordinate(0, 0));
+IPiece rook = CreatePiece(WHITE, ROOK, board, new Coordinate(7, 7));
 Console.WriteLine(board);
-rook.Move(4, 1);
-Console.WriteLine(board);
-rook.Move(0, 1);
-Console.WriteLine(board);
-rook.Move(5, 5);
+bishop.Move(7, 7);
+bishop.Move(0, 0);
 Console.WriteLine(board);
