@@ -23,6 +23,8 @@ namespace ChessBoard.Pieces
                     return new Rook(board, coordinate, color);
                 case QUEEN:
                     return new Queen(board, coordinate, color);
+                case KING:
+                    return new King(board, coordinate, color);
                 default:
                     throw new Exception("Meow meow problem meow");
             }
