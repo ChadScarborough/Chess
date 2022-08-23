@@ -26,28 +26,79 @@ namespace ChessGame.Players
 
         public void InterpretMoveString()
         {
+            // TODO: Include castling
             switch (_input.Length)
             {
                 case 2:
                     InterpretPawnMove();
                     return;
                 case 3:
-                    GuardPieceAbbreviation();
-                    GuardRankAndFile();
-                    int file, rank;
-                    GetRankAndFile(out file, out rank);
-                    PieceType type = pieceAbbreviations[_input[0]];
-                    foreach(IPiece piece in _player.Pieces)
+                    InterpretPieceMove();
+                    return;
+                case 4:
+                    if(_input[1] == 'x')
                     {
-                        if (piece.Type != type)
-                            continue;
-                        if(piece.CanMove(rank, file))
-                        {
-                            piece.Move(rank, file);
-                            return;
-                        }
+                        InterpretCaptureMove();
                     }
                     return;
+            }
+        }
+
+        private void InterpretCaptureMove()
+        {
+            if (files.ContainsKey(_input[0]))
+            {
+                InterpretPawnCapture();
+                return;
+            }
+            if (pieceAbbreviations.ContainsKey(_input[0]))
+            {
+                InterpretPieceCapture();
+                return;
+            }
+            throw new Exception("Invalid input");
+        }
+
+        private void InterpretPawnCapture()
+        {
+            int currentFile = files[_input[0]];
+            GuardRankAndFile();
+            int targetFile, rank;
+            GetRankAndFile(out targetFile, out rank);
+            foreach(IPiece pawn in _player.Pieces)
+            {
+                if (pawn.Type != PAWN)
+                    continue;
+                if (pawn.Location.GetFile() == currentFile &&
+                    pawn.CanMove(rank, targetFile))
+                {
+                    pawn.Move(rank, targetFile);
+                    return;
+                }
+            }
+        }
+
+        private void InterpretPieceCapture()
+        {
+            InterpretPieceMove();
+        }
+
+        private void InterpretPieceMove()
+        {
+            GuardPieceAbbreviation();
+            GuardRankAndFile();
+            int file, rank;
+            GetRankAndFile(out file, out rank);
+            PieceType type = pieceAbbreviations[_input[0]];
+            foreach (IPiece piece in _player.Pieces)
+            {
+                if (piece.Type != type)
+                    continue;
+                if (piece.CanMove(rank, file))
+                {
+                    piece.Move(rank, file);
+                    return;
+                }
             }
         }
 
