@@ -17,17 +17,24 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            Coordinate currentLocation = _piece.Location.GetCoordinate();
-            if (currentLocation.Equals(targetLocation))
+            try
+            {
+                Coordinate currentLocation = _piece.Location.GetCoordinate();
+                if (currentLocation.Equals(targetLocation))
+                    return false;
+                if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
+                    _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
+                    return false;
+                int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
+                int fileDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
+                if (rankDiff > 1 || fileDiff > 1)
+                    return false;
+                return true;
+            }
+            catch
+            {
                 return false;
-            if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
-                _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
-                return false;
-            int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
-            int fileDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
-            if (rankDiff > 1 || fileDiff > 1)
-                return false;
-            return true;
+            }
         }
     }
 }

@@ -15,19 +15,26 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            Coordinate currentLocation = _piece.Location.GetCoordinate();
-            if (currentLocation.Equals(targetLocation)) 
-                throw new Exception("Piece cannot move to the square it already occupies");
-            if (currentLocation.rank != targetLocation.rank && currentLocation.file != targetLocation.file)
-                throw new Exception("Rooks may only move along ranks or files");
-            if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() && 
-                _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
-                throw new Exception("Cannot capture a piece of the same color");
-            if (currentLocation.rank == targetLocation.rank)
-                return CanMoveAlongRank(currentLocation, targetLocation);
-            if (currentLocation.file == targetLocation.file)
-                return CanMoveAlongFile(currentLocation, targetLocation);
-            return false;
+            try
+            {
+                Coordinate currentLocation = _piece.Location.GetCoordinate();
+                if (currentLocation.Equals(targetLocation))
+                    throw new Exception("Piece cannot move to the square it already occupies");
+                if (currentLocation.rank != targetLocation.rank && currentLocation.file != targetLocation.file)
+                    throw new Exception("Rooks may only move along ranks or files");
+                if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
+                    _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
+                    throw new Exception("Cannot capture a piece of the same color");
+                if (currentLocation.rank == targetLocation.rank)
+                    return CanMoveAlongRank(currentLocation, targetLocation);
+                if (currentLocation.file == targetLocation.file)
+                    return CanMoveAlongFile(currentLocation, targetLocation);
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool CanMoveAlongRank(Coordinate currentLocation, Coordinate targetLocation)

@@ -16,19 +16,26 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            Coordinate currentLocation = _pawn.Location.GetCoordinate();
-            if (currentLocation.Equals(targetLocation)) 
-                throw new Exception("Piece cannot move to the square it already occupies");
-            Square targetSquare = _board.GetSquareByCoordinate(targetLocation);
-            if (targetSquare.IsOccupied())
+            try
             {
-                return TryCapture(currentLocation, targetLocation);
+                Coordinate currentLocation = _pawn.Location.GetCoordinate();
+                if (currentLocation.Equals(targetLocation))
+                    throw new Exception("Piece cannot move to the square it already occupies");
+                Square targetSquare = _board.GetSquareByCoordinate(targetLocation);
+                if (targetSquare.IsOccupied())
+                {
+                    return TryCapture(currentLocation, targetLocation);
+                }
+                if (currentLocation.rank == 6)
+                {
+                    return SeventhRankMove(currentLocation, targetLocation);
+                }
+                return StandardMove(currentLocation, targetLocation);
             }
-            if (currentLocation.rank == 6)
+            catch
             {
-                return SeventhRankMove(currentLocation, targetLocation);
+                return false;
             }
-            return StandardMove(currentLocation, targetLocation);
         }
 
         private bool TryCapture(Coordinate currentLocation, Coordinate targetLocation)

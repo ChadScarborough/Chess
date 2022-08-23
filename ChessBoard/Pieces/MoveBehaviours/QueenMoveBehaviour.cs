@@ -15,7 +15,14 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            return CanMoveAsRook(targetLocation) || CanMoveAsBishop(targetLocation);
+            try
+            {
+                return CanMoveAsRook(targetLocation) || CanMoveAsBishop(targetLocation);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private bool CanMoveAsRook(Coordinate targetLocation)

@@ -15,12 +15,19 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            Coordinate currentLocation = _knight.Location.GetCoordinate();
-            GuardMove(currentLocation, targetLocation);
-            int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
-            int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
-            if (rankDiff + fileDiff == 3 && rankDiff * fileDiff == 2) return true;
-            return false;
+            try
+            {
+                Coordinate currentLocation = _knight.Location.GetCoordinate();
+                GuardMove(currentLocation, targetLocation);
+                int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
+                int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
+                if (rankDiff + fileDiff == 3 && rankDiff * fileDiff == 2) return true;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private void GuardMove(Coordinate currentLocation, Coordinate targetLocation)

@@ -15,21 +15,28 @@ namespace ChessBoard.Pieces.MoveBehaviours
 
         public bool CanMove(Coordinate targetLocation)
         {
-            Coordinate currentLocation = _piece.Location.GetCoordinate();
-            if (currentLocation.Equals(targetLocation))
+            try
+            {
+                Coordinate currentLocation = _piece.Location.GetCoordinate();
+                if (currentLocation.Equals(targetLocation))
+                    return false;
+                if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
+                    _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
+                    return false;
+                int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
+                int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
+                if (rankDiff != fileDiff)
+                    return false;
+                if (targetLocation.rank > currentLocation.rank)
+                    return CanMoveUpAlongDiagonal(currentLocation, targetLocation);
+                if (targetLocation.rank < currentLocation.rank)
+                    return CanMoveDownAlongDiagonal(currentLocation, targetLocation);
                 return false;
-            if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
-                _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
+            }
+            catch
+            {
                 return false;
-            int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
-            int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
-            if (rankDiff != fileDiff)
-                return false;
-            if (targetLocation.rank > currentLocation.rank)
-                return CanMoveUpAlongDiagonal(currentLocation, targetLocation);
-            if (targetLocation.rank < currentLocation.rank)
-                return CanMoveDownAlongDiagonal(currentLocation, targetLocation);
-            return false;
+            }
         }
 
         private bool CanMoveUpAlongDiagonal(Coordinate currentLocation, Coordinate targetLocation)
