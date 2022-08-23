@@ -17,10 +17,10 @@ namespace ChessBoard.Pieces.MoveBehaviours
         {
             Coordinate currentLocation = _piece.Location.GetCoordinate();
             if (currentLocation.Equals(targetLocation))
-                throw new Exception("Piece cannot move to the square it already occupies");
+                return false;
             if (_board.GetSquareByCoordinate(targetLocation).IsOccupied() &&
                 _board.GetSquareByCoordinate(targetLocation).OccupyingPieceColor() == _piece.PieceColor)
-                throw new Exception("Piece cannot capture a piece of the same color");
+                return false;
             int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
             int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
             if (rankDiff != fileDiff)
@@ -46,7 +46,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             while (currentRank < targetLocation.rank && currentFile < targetLocation.file)
             {
                 if (_board.GetSquareByCoordinate(currentRank, currentFile).IsOccupied())
-                    throw new Exception("Cannot move through another piece");
+                    return false;
                 currentRank++;
                 currentFile++;
             }
@@ -60,7 +60,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             while (currentRank < targetLocation.rank && currentFile > targetLocation.file)
             {
                 if (_board.GetSquareByCoordinate(currentRank, currentFile).IsOccupied())
-                    throw new Exception("Cannot move through another piece");
+                    return false;
                 currentRank++;
                 currentFile--;
             }
@@ -81,7 +81,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             while (currentRank > targetLocation.rank && currentFile < targetLocation.file)
             {
                 if (_board.GetSquareByCoordinate(currentRank, currentFile).IsOccupied())
-                    throw new Exception("Cannot move through another piece");
+                    return false;
                 currentRank--;
                 currentFile++;
             }
@@ -95,7 +95,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             while(currentRank > targetLocation.rank && currentFile > targetLocation.file)
             {
                 if (_board.GetSquareByCoordinate(currentRank, currentFile).IsOccupied())
-                    throw new Exception("Cannot move through another piece");
+                    return false;
                 currentRank--;
                 currentFile--;
             }
