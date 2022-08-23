@@ -8,16 +8,18 @@ namespace ChessGame.Players
     {
         protected IBoard _board;
         public abstract List<IPiece> Pieces { get; init; }
-        public int TotalValue { get
+        public int TotalValue
+        {
+            get
             {
                 int total = 0;
-                foreach(IPiece piece in Pieces)
+                foreach (IPiece piece in Pieces)
                 {
                     if (piece.Type == KING) continue;
                     total += piece.Value;
                 }
                 return total;
-            } 
+            }
         }
         
         public Player(IBoard board)
@@ -46,5 +48,11 @@ namespace ChessGame.Players
         }
 
         public abstract void Setup();
+
+        public void MakeMoveFromStringInput(string input)
+        {
+            MoveStringInterpreter interpreter = new MoveStringInterpreter(this, input);
+            interpreter.InterpretMoveString();
+        }
     }
 }
