@@ -14,6 +14,7 @@ namespace ChessBoard.Pieces
         public PieceType Type => ROOK;
         public Square Location { get; set; }
         public int Value => 5;
+        public bool HasMoved { get; set; }
 
         public Rook(IBoard board, Coordinate coordinate, Color color)
         {
@@ -22,6 +23,7 @@ namespace ChessBoard.Pieces
             board.AddPiece(this, coordinate);
             PieceColor = color;
             _moveBehaviour = new RookMoveBehaviour(_board, this);
+            HasMoved = false;
         }
 
         public void Destroy()

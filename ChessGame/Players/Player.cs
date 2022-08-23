@@ -8,6 +8,9 @@ namespace ChessGame.Players
     {
         protected IBoard _board;
         public abstract List<IPiece> Pieces { get; init; }
+        public IPiece King { get; set; }
+        public IPiece KingsideRook { get; set; }
+        public IPiece QueensideRook { get; set; }
         public int TotalValue
         {
             get
@@ -54,5 +57,32 @@ namespace ChessGame.Players
             MoveStringInterpreter interpreter = new MoveStringInterpreter(this, input);
             interpreter.InterpretMoveString();
         }
+
+        
+        public void CastleKingside()
+        {
+            if (King.HasMoved) return;
+            if (KingsideRook.HasMoved) return;
+            int rank = King.Location.GetRank();
+            if (_board.GetSquareByCoordinate(rank, 5).IsOccupied() ||
+                _board.GetSquareByCoordinate(rank, 6).IsOccupied())
+                return;
+            _board.MovePiece(King, new Coordinate(rank, 6));
+            _board.MovePiece(KingsideRook, new Coordinate(rank, 5));    
+        }
+
+        public void CastleQueenside()
+        {
+            if (King.HasMoved) return;
+            if (QueensideRook.HasMoved) return;
+            int rank = King.Location.GetRank();
+            if (_board.GetSquareByCoordinate(rank, 3).IsOccupied() ||
+                _board.GetSquareByCoordinate(rank, 2).IsOccupied() ||
+                _board.GetSquareByCoordinate(rank, 1).IsOccupied())
+                return;
+            _board.MovePiece(King, new Coordinate(rank, 1));
+            _board.MovePiece(QueensideRook, new Coordinate(rank, 2));
+        }
+        
     }
 }

@@ -14,10 +14,12 @@ namespace ChessBoard.Pieces
         public PieceType Type { get => PAWN; }
 
         public int Value { get => 1; }
+        public bool HasMoved { get ; set; }
 
         public Pawn(IBoard board, Coordinate coordinate)
         {
             _board = board;
+            HasMoved = false;
         }
 
         public abstract void Destroy();

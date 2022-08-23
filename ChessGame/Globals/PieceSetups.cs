@@ -45,6 +45,15 @@ namespace ChessGame.Globals
             IPiece piece = CreatePiece(playerColor, type, board, coordinate);
             board.AddPiece(piece, coordinate);
             player.AddPiece(piece);
+            if (type == KING)
+                player.King = piece;
+            if (type == ROOK)
+            {
+                if (coordinate.file == 0)
+                    player.QueensideRook = piece;
+                else
+                    player.KingsideRook = piece;
+            }
         }
     }
 }

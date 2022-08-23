@@ -11,10 +11,11 @@ namespace ChessBoard.Pieces
         private IBoard _board;
         private IMoveBehaviour _moveBehaviour;
 
-        public Enums.Color PieceColor { get; init; }
-        public Enums.PieceType Type => QUEEN;
+        public Color PieceColor { get; init; }
+        public PieceType Type => QUEEN;
         public Square Location { get; set; }
         public int Value => 9;
+        public bool HasMoved { get; set; }
 
         public Queen(IBoard board, Coordinate coordinate, Color color)
         {
@@ -23,6 +24,7 @@ namespace ChessBoard.Pieces
             Location.SetPiece(this);
             PieceColor = color;
             _moveBehaviour = new QueenMoveBehaviour(_board, this);
+            HasMoved = false;
         }
 
         public void Destroy()

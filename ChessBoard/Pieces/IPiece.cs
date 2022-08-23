@@ -9,6 +9,7 @@ namespace ChessBoard.Pieces
         public PieceType Type { get; }
         public Square Location { get; set; }
         public int Value { get; }
+        public bool HasMoved { get; set; }
 
         public void Move(int rank, int file);
         public bool CanMove(int rank, int file);

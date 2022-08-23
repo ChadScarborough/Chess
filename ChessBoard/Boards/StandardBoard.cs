@@ -80,6 +80,7 @@ namespace ChessBoard.Boards
         public void MovePiece(IPiece piece, Square square)
         {
             square.SetPiece(piece);
+            piece.HasMoved = true;
         }
 
         public void MovePiece(IPiece piece, Coordinate coordinate)

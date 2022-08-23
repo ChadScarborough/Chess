@@ -16,6 +16,8 @@ namespace ChessBoard.Pieces
         public Square Location { get; set; }
         public int Value => int.MaxValue;
 
+        public bool HasMoved { get; set; }
+
         public King(IBoard board, Coordinate coordinate, Color color)
         {
             _board = board;
@@ -23,6 +25,7 @@ namespace ChessBoard.Pieces
             Location.SetPiece(this);
             PieceColor = color;
             _moveBehaviour = new KingMoveBehaviour(_board, this);
+            HasMoved = false;
         }
 
         public void Destroy()
