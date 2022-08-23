@@ -26,7 +26,16 @@ namespace ChessGame.Players
 
         public void InterpretMoveString()
         {
-            // TODO: Include castling
+            if(_input == "O-O")
+            {
+                _player.CastleKingside();
+                return;
+            }
+            if(_input == "O-O-O")
+            {
+                _player.CastleQueenside();
+                return;
+            }
             switch (_input.Length)
             {
                 case 2:
@@ -36,11 +45,38 @@ namespace ChessGame.Players
                     InterpretPieceMove();
                     return;
                 case 4:
-                    if(_input[1] == 'x')
+                    if (files.ContainsKey(_input[1]))
+                    {
+                        DisambiguatePieceMove();
+                        return;
+                    }
+                    if (_input[^3] == 'x')
                     {
                         InterpretCaptureMove();
+                        return;
                     }
                     return;
+            }
+        }
+
+        private void DisambiguatePieceMove()
+        {
+            GuardPieceAbbreviation();
+            GuardRankAndFile();
+            int file, rank;
+            GetRankAndFile(out file, out rank);
+            PieceType type = pieceAbbreviations[_input[0]];
+            foreach (IPiece piece in _player.Pieces)
+            {
+                if (piece.Type != type)
+                    continue;
+                if (piece.Location.GetFile() != files[_input[1]])
+                    continue;
+                if (piece.CanMove(rank, file))
+                {
+                    piece.Move(rank, file);
+                    return;
+                }
             }
         }
 
