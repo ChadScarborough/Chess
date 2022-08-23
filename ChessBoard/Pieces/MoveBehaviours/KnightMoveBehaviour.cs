@@ -20,7 +20,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
             int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
             if (rankDiff + fileDiff == 3 && rankDiff * fileDiff == 2) return true;
-            throw new Exception("Knights must move in an 'L' shape");
+            return false;
         }
 
         private void GuardMove(Coordinate currentLocation, Coordinate targetLocation)

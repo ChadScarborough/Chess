@@ -24,7 +24,7 @@ namespace ChessBoard.Pieces.MoveBehaviours
             int rankDiff = Math.Abs(currentLocation.rank - targetLocation.rank);
             int fileDiff = Math.Abs(currentLocation.file - targetLocation.file);
             if (rankDiff != fileDiff)
-                throw new Exception("Bishop must move along a diagonal");
+                return false;
             if (targetLocation.rank > currentLocation.rank)
                 return CanMoveUpAlongDiagonal(currentLocation, targetLocation);
             if (targetLocation.rank < currentLocation.rank)
