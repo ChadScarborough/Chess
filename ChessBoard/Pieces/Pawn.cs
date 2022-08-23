@@ -22,5 +22,9 @@ namespace ChessBoard.Pieces
 
         public abstract void Destroy();
         public abstract void Move(int rank, int file);
+        public bool CanMove(int rank, int file)
+        {
+            return _moveBehaviour.CanMove(new Coordinate(rank, file));
+        }
     }
 }

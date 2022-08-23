@@ -1,32 +1,33 @@
 ﻿using ChessBoard.Boards;
-using static ChessBoard.Globals.Functions;
+using ChessBoard.Globals;
 using static ChessBoard.Globals.Enums;
 using ChessBoard.Pieces.MoveBehaviours;
+using static ChessBoard.Globals.Functions;
 
 namespace ChessBoard.Pieces
 {
-    public class Rook : IPiece
+    public class King : IPiece
     {
         private IBoard _board;
         private IMoveBehaviour _moveBehaviour;
 
-        public Color PieceColor { get; }
-        public PieceType Type => ROOK;
+        public Enums.Color PieceColor { get; init; }
+        public Enums.PieceType Type => KING;
         public Square Location { get; set; }
-        public int Value => 5;
+        public int Value => int.MaxValue;
 
-        public Rook(IBoard board, Coordinate coordinate, Color color)
+        public King(IBoard board, Coordinate coordinate, Color color)
         {
             _board = board;
             Location = board.GetSquareByCoordinate(coordinate);
-            board.AddPiece(this, coordinate);
+            Location.SetPiece(this);
             PieceColor = color;
-            _moveBehaviour = new RookMoveBehaviour(_board, this);
+            _moveBehaviour = new KingMoveBehaviour(_board, this);
         }
 
         public void Destroy()
         {
-            // TODO: Add logic, I guess
+            // TODO: Add logic here
         }
 
         public void Move(int rank, int file)
@@ -35,12 +36,11 @@ namespace ChessBoard.Pieces
             {
                 TryMove(rank, file);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
-
 
         private void TryMove(int rank, int file)
         {
@@ -62,9 +62,9 @@ namespace ChessBoard.Pieces
             switch (PieceColor)
             {
                 case WHITE:
-                    return "R";
+                    return "K";
                 case BLACK:
-                    return "r";
+                    return "k";
                 default:
                     throw new Exception("Meeeeoooooow");
             }

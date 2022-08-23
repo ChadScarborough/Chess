@@ -11,6 +11,7 @@ namespace ChessBoard.Pieces
         public int Value { get; }
 
         public void Move(int rank, int file);
+        public bool CanMove(int rank, int file);
         public void Destroy();
     }
 }

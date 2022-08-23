@@ -52,6 +52,11 @@ namespace ChessBoard.Pieces
             }
         }
 
+        public bool CanMove(int rank, int file)
+        {
+            return _moveBehaviour.CanMove(new Coordinate(rank, file));
+        }
+
         public override string ToString()
         {
             switch (PieceColor)
